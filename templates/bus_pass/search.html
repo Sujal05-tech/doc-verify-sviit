@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Bus Pass Search{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h3 class="mb-4">🔍 Bus Pass Verification</h3>
+
+    <!-- Search Form -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="POST" action="{{ url_for('bus_pass.search_student') }}">
+                <div class="input-group">
+                    <input type="text" name="query" class="form-control form-control-lg"
+                        placeholder="Enter Student Name or ID (e.g. Amit Patel or CSE2301)"
+                        value="{{ query if query else '' }}" required>
+                    <button class="btn btn-primary btn-lg" type="submit">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <!-- Search Results -->
+    {% if results %}
+    <h5 class="mb-3">Results for: <strong>"{{ query }}"</strong></h5>
+    <div class="row">
+        {% for student in results %}
+        <div class="col-md-6 mb-3">
+            <div class="card shadow-sm h-100">
+                <div class="card-body d-flex align-items-center gap-3">
+
+                    <!-- Student Photo -->
+                    <img src="{{ url_for('static', filename='uploads/photos/' + (student.photo or 'default.png')) }}"
+                        alt="Photo" class="rounded-circle"
+                        style="width:70px; height:70px; object-fit:cover; border: 2px solid #dee2e6;">
+
+                    <!-- Student Info -->
+                    <div class="flex-grow-1">
+                        <h6 class="mb-1 fw-bold">{{ student.name }}</h6>
+                        <small class="text-muted">{{ student.student_id }} | {{ student.branch }} | {{ student.year }}</small>
+                        <div class="mt-1">
+                            {% if student.bus_fee_paid %}
+                                <span class="badge bg-success">✅ Bus Fee Paid</span>
+                            {% else %}
+                                <span class="badge bg-danger">❌ Bus Fee Not Paid</span>
+                            {% endif %}
+
+                            {% if student.is_active %}
+                                <span class="badge bg-primary">🚌 Pass Active</span>
+                            {% else %}
+                                <span class="badge bg-secondary">No Active Pass</span>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- View Detail Button -->
+                    <a href="{{ url_for('bus_pass.student_detail', student_id=student.student_id) }}"
+                        class="btn btn-sm btn-outline-primary">View</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

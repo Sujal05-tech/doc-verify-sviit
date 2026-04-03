@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Student Detail - {{ student.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <a href="{{ url_for('bus_pass.search_page') }}" class="btn btn-outline-secondary mb-3">← Back to Search</a>
+
+    <div class="card shadow">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Student Details</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <!-- Photo -->
+                <div class="col-md-3 text-center mb-3">
+                    <img src="{{ url_for('static', filename='uploads/photos/' + (student.photo or 'default.png')) }}"
+                        alt="Student Photo"
+                        class="img-fluid rounded shadow"
+                        style="max-height: 200px; object-fit: cover; border: 3px solid #dee2e6;">
+                    <p class="mt-2 text-muted small">Identity Photo</p>
+                </div>
+
+                <!-- Student Info -->
+                <div class="col-md-9">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th width="35%">Student ID</th>
+                                <td>{{ student.student_id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Full Name</th>
+                                <td>{{ student.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>Branch</th>
+                                <td>{{ student.branch }}</td>
+                            </tr>
+                            <tr>
+                                <th>Year</th>
+                                <td>{{ student.year }}</td>
+                            </tr>
+                            <tr>
+                                <th>Email</th>
+                                <td>{{ student.email }}</td>
+                            </tr>
+                            <tr>
+                                <th>Phone</th>
+                                <td>{{ student.phone }}</td>
+                            </tr>
+                            <tr>
+                                <th>Bus Fee Status</th>
+                                <td>
+                                    {% if student.bus_fee_paid %}
+                                        <span class="badge bg-success fs-6">✅ Paid</span>
+                                    {% else %}
+                                        <span class="badge bg-danger fs-6">❌ Not Paid</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Bus Pass Details -->
+            <hr>
+            <h6 class="fw-bold mb-3">🚌 Bus Pass Details</h6>
+            {% if student.pass_number %}
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th width="35%">Pass Number</th>
+                        <td>{{ student.pass_number }}</td>
+                    </tr>
+                    <tr>
+                        <th>Route No</th>
+                        <td>{{ student.route_no }}</td>
+                    </tr>
+                    <tr>
+                        <th>Issue Date</th>
+                        <td>{{ student.issue_date }}</td>
+                    </tr>
+                    <tr>
+                        <th>Expiry Date</th>
+                        <td>{{ student.expiry_date }}</td>
+                    </tr>
+                    <tr>
+                        <th>Status</th>
+                        <td>
+                            {% if student.is_active %}
+                                <span class="badge bg-success fs-6">Active ✅</span>
+                            {% else %}
+                                <span class="badge bg-danger fs-6">Expired ❌</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            {% else %}
+                <div class="alert alert-warning">No bus pass found for this student.</div>
+            {% endif %}
+
+        </div>
+    </div>
+</div>
+{% endblock %}
