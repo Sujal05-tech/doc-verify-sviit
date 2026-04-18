@@ -1,4 +1,4 @@
-# Hey guys! SYRUP here, This file shows how to run this project, along with each and every one of it's features and functionalities.
+# Hey guys! SHREYAS here, This file shows how to run this project, along with each and every one of it's features and functionalities.
 > The index.php is the main file, and docuguard.sql is the database file.
 
 # 🛡️ DocuGuard Automata
