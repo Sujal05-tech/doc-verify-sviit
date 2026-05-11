@@ -4,13 +4,13 @@ session_start();
 // ==========================================
 // 1. CONFIGURATION
 // ==========================================
-$db_host = 'localhost';
-$db_user = 'root';
-$db_pass = '';
-$db_name = 'docuguard';
+$db_host = 'sql103.infinityfree.com';
+$db_user = 'if0_41681583';
+$db_pass = 'WlOojy0MKGVTX';
+$db_name = 'if0_41681583_docuguard';
 
 // *** SET YOUR GEMINI API KEY HERE ***
-define('GEMINI_API_KEY', 'AIzaSyB4vQEjKCJtNtpvF_N6X7gJF3EPQR0Xui4');
+define('GEMINI_API_KEY', 'AIzaSyAcpoetm3VEbmZoR0m1ny0ow7kLT5fvVIA');
 
 // *** EMAIL CONFIG (Gmail App Password) ***
 // To enable OTP emails: set these. Leave empty to simulate OTP in response.
@@ -823,6 +823,7 @@ $userName   = $_SESSION['name'] ?? '';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DocuGuard Automata | Verification Portal</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%234f46e5'/><stop offset='100%25' stop-color='%23ec4899'/></linearGradient></defs><rect width='100' height='100' rx='22' fill='url(%23g)'/><text y='.9em' font-size='72' x='50%25' text-anchor='middle' dominant-baseline='top' style='font-family:sans-serif'>🛡️</text></svg>">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -839,7 +840,7 @@ $userName   = $_SESSION['name'] ?? '';
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         body { font-family: 'Inter', sans-serif; transition: background-color 0.3s ease, color 0.3s ease; }
@@ -956,10 +957,47 @@ $userName   = $_SESSION['name'] ?? '';
                 <!-- 1. AUTH VIEW -->
                 <div id="view-auth" class="page-transition hidden-view flex-1 flex items-center justify-center">
                     <div class="w-full max-w-md my-auto">
-                        <div class="text-center mb-10 group cursor-default">
-                            <div class="w-16 h-16 mx-auto mb-4 rounded-2xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center text-white shadow-xl group-hover:scale-110 transition-transform duration-300">
-                                <i class="ph-bold ph-shield-check text-4xl"></i>
+                        <!-- Auth Page Header Banner -->
+                        <div class="w-full mb-8 rounded-3xl overflow-hidden relative" style="background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 40%, #ec4899 100%); min-height: 160px;">
+                            <!-- Decorative blobs -->
+                            <div style="position:absolute;top:-30px;left:-30px;width:160px;height:160px;background:rgba(255,255,255,0.08);border-radius:50%;"></div>
+                            <div style="position:absolute;bottom:-40px;right:-20px;width:200px;height:200px;background:rgba(255,255,255,0.06);border-radius:50%;"></div>
+                            <div style="position:absolute;top:20px;right:40px;width:80px;height:80px;background:rgba(255,255,255,0.05);border-radius:50%;"></div>
+                            <!-- Content -->
+                            <div class="relative z-10 p-8 flex flex-col items-center text-center">
+                                <!-- Dark mode toggle positioned top-right of banner -->
+                                <button onclick="toggleAuthTheme()" id="auth-theme-btn"
+                                    class="absolute top-4 right-4 w-9 h-9 rounded-xl bg-white/15 hover:bg-white/30 border border-white/25 flex items-center justify-center transition-all backdrop-blur-sm shadow-md"
+                                    title="Toggle dark/light mode">
+                                    <i class="ph ph-moon text-white text-lg dark:hidden" id="auth-moon-icon"></i>
+                                    <i class="ph ph-sun text-white text-lg hidden dark:block" id="auth-sun-icon"></i>
+                                </button>
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center shadow-lg border border-white/30">
+                                        <i class="ph-bold ph-shield-check text-white text-2xl"></i>
+                                    </div>
+                                    <div class="text-left">
+                                        <h1 class="text-2xl font-black text-white tracking-tight">DocuGuard</h1>
+                                        <p class="text-white/70 text-xs font-semibold uppercase tracking-widest">Automata</p>
+                                    </div>
+                                </div>
+                                <p class="text-white/80 text-sm font-medium max-w-xs leading-relaxed">AI-Powered Document Verification Portal — Secure, Smart & Instant</p>
+                                <div class="flex gap-4 mt-4 flex-wrap justify-center">
+                                    <span class="flex items-center gap-1.5 text-white/70 text-xs font-semibold bg-white/10 px-3 py-1.5 rounded-full border border-white/20">
+                                        <i class="ph-fill ph-robot text-sm"></i> Gemini AI
+                                    </span>
+                                    <span class="flex items-center gap-1.5 text-white/70 text-xs font-semibold bg-white/10 px-3 py-1.5 rounded-full border border-white/20">
+                                        <i class="ph-fill ph-fingerprint text-sm"></i> Biometric
+                                    </span>
+                                    <span class="flex items-center gap-1.5 text-white/70 text-xs font-semibold bg-white/10 px-3 py-1.5 rounded-full border border-white/20">
+                                        <i class="ph-fill ph-lock text-sm"></i> Encrypted
+                                    </span>
+                                </div>
                             </div>
+                        </div>
+
+                        <!-- Logo + Title -->
+                        <div class="text-center mb-8 group cursor-default">
                             <h2 class="text-3xl font-bold text-gray-900 dark:text-white mb-2" id="auth-title">Sign In</h2>
                             <p class="text-gray-500 dark:text-gray-400">Access your secure verification portal</p>
                         </div>
@@ -1191,6 +1229,7 @@ $userName   = $_SESSION['name'] ?? '';
                         <button onclick="openInfoModal('terms')" class="hover:text-primary transition-colors flex items-center gap-1.5"><i class="ph-fill ph-file-text"></i> Terms</button>
                         <button onclick="openInfoModal('privacy')" class="hover:text-primary transition-colors flex items-center gap-1.5"><i class="ph-fill ph-lock-key"></i> Privacy</button>
                         <button onclick="openInfoModal('contact')" class="hover:text-primary transition-colors flex items-center gap-1.5"><i class="ph-fill ph-envelope-simple"></i> Contact</button>
+                        <button onclick="openInfoModal('project')" class="hover:text-primary transition-colors flex items-center gap-1.5"><i class="ph-fill ph-student"></i> Project</button>
                     </div>
                 </div>
             </footer>
@@ -1392,7 +1431,7 @@ $userName   = $_SESSION['name'] ?? '';
                         <div class="flex justify-between"><span class="text-gray-500">Status</span><span class="font-semibold text-green-600 flex items-center gap-1" id="cert-status"><i class="ph-fill ph-check-circle"></i> VERIFIED</span></div>
                         <div class="flex justify-between items-start gap-2"><span class="text-gray-500 flex-shrink-0">Hash (SHA-256)</span><span class="font-mono text-xs text-gray-700 dark:text-gray-300 break-all text-right" id="cert-hash">—</span></div>
                     </div>
-                    <div class="flex justify-center"><div class="p-2 bg-white rounded-xl shadow-inner border border-gray-200"><canvas id="cert-qr-canvas" width="120" height="120"></canvas></div></div>
+                    <div class="flex justify-center"><div class="p-2 bg-white rounded-xl shadow-inner border border-gray-200"><div id="cert-qr-canvas" style="width:120px;height:120px;"></div></div></div>
                     <p class="text-center text-xs text-gray-400 mt-2 font-medium">Scan QR to cryptographically verify</p>
                     <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 text-center text-xs text-gray-400">Certificate ID: <span id="cert-id" class="font-mono text-gray-600 dark:text-gray-300 font-bold">—</span></div>
                 </div>
@@ -1463,6 +1502,16 @@ $userName   = $_SESSION['name'] ?? '';
         updateUIState();
         setupMobileMenu();
     });
+
+    function toggleAuthTheme() {
+        const root = document.documentElement;
+        root.classList.toggle('dark');
+        localStorage.setItem('theme', root.classList.contains('dark') ? 'dark' : 'light');
+        // Sync the sidebar toggle icon too
+        const moonIcons = document.querySelectorAll('.ph-moon');
+        const sunIcons  = document.querySelectorAll('.ph-sun');
+        // Icons update automatically via dark: class — no manual work needed
+    }
 
     function initTheme() {
         const root = document.documentElement;
@@ -2077,8 +2126,10 @@ $userName   = $_SESSION['name'] ?? '';
         const certId = 'DGA-' + String(doc.id).padStart(6,'0') + '-' + Date.now().toString(36).toUpperCase();
         document.getElementById('cert-id').innerText = certId;
         const qrData = JSON.stringify({ id: certId, title: doc.title, status: doc.status, hash: certHash.substring(0,16), portal: window.location.origin });
-        const canvas = document.getElementById('cert-qr-canvas');
-        try { await QRCode.toCanvas(canvas, qrData, { width: 120, margin: 1, color: { dark: '#1e293b', light: '#ffffff' } }); } catch(e) {}
+        // Use QRServer API as reliable fallback
+        const qrContainer = document.getElementById('cert-qr-canvas').parentElement;
+        const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=${encodeURIComponent(qrData)}&color=1e293b&bgcolor=ffffff&margin=4`;
+        qrContainer.innerHTML = `<img src="${qrUrl}" width="120" height="120" style="border-radius:8px;" alt="Verification QR Code" onerror="this.parentElement.innerHTML='<div style=\'width:120px;height:120px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#666\'>QR unavailable</div>'">`;
         const modal = document.getElementById('cert-modal');
         modal.classList.remove('hidden');
         requestAnimationFrame(() => { modal.classList.remove('opacity-0'); document.getElementById('cert-modal-inner').classList.remove('scale-95'); });
@@ -2293,6 +2344,195 @@ $userName   = $_SESSION['name'] ?? '';
     const infoContentData = {
         terms: { icon: 'ph-file-text', title: 'Terms of Service', content: `<div class="space-y-6"><div class="p-4 bg-gray-50 dark:bg-gray-800/50 rounded-xl border border-gray-100 dark:border-gray-700 text-sm italic">Last updated: April 2026</div><div><h4 class="font-bold text-lg text-gray-900 dark:text-white mb-2 flex items-center gap-2"><i class="ph-fill ph-check-circle text-primary"></i> 1. System Introduction</h4><p class="leading-relaxed">Welcome to DocuGuard Automata. By utilizing our portal, you agree to our automated verification pipeline which uses Google Gemini AI, OCR, biometric analysis, and university database cross-referencing.</p></div><div><h4 class="font-bold text-lg text-gray-900 dark:text-white mb-2 flex items-center gap-2"><i class="ph-fill ph-warning-circle text-primary"></i> 2. User Responsibilities</h4><p class="leading-relaxed">You are strictly responsible for the authenticity of documents submitted. Any attempt to upload forged documents will be detected by our AI forensic system and may result in account suspension.</p></div><div class="pt-4 border-t border-gray-100 dark:border-gray-800"><button onclick="closeInfoModal()" class="w-full bg-primary/10 hover:bg-primary/20 text-primary dark:text-white font-bold py-3 rounded-xl transition-all">I Understand & Accept</button></div></div>` },
         privacy: { icon: 'ph-lock-key', title: 'Privacy Policy', content: `<div class="space-y-6"><div class="p-5 rounded-2xl bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-900/10 border border-green-200 dark:border-green-800/50 text-green-800 dark:text-green-300 font-medium flex items-center gap-4 shadow-sm"><i class="ph-fill ph-shield-check text-4xl"></i><div><p class="font-bold text-lg">AI-Powered Security</p><p class="text-sm opacity-90">Document images are processed by Gemini AI for verification only and are not stored long-term.</p></div></div><div><h4 class="font-bold text-lg text-gray-900 dark:text-white mb-2">Data Protection</h4><p class="leading-relaxed">All uploaded documents are encrypted at rest. Biometric selfie data is used only for real-time face comparison and discarded immediately after verification.</p></div></div>` },
+        project: { icon: 'ph-graduation-cap', title: 'About This Project', content: `
+<div class="space-y-6">
+
+  <!-- Project Header -->
+  <div class="p-5 rounded-2xl bg-gradient-to-br from-primary/10 to-secondary/10 border border-primary/20 dark:border-primary/30">
+    <div class="flex items-center gap-4 mb-3">
+      <div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-primary to-secondary flex items-center justify-center text-white shadow-lg flex-shrink-0">
+        <i class="ph-bold ph-shield-check text-2xl"></i>
+      </div>
+      <div>
+        <h3 class="text-xl font-black text-gray-900 dark:text-white">DocuGuard Automata</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400">AI-Powered Document Verification Portal</p>
+      </div>
+    </div>
+    <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+      A full-stack web application that uses Google Gemini AI to verify student ID cards, bus passes,
+      and official government documents (Aadhaar, PAN, Domicile) with real-time forgery detection,
+      biometric face matching, offline Aadhaar QR verification, and university database cross-referencing.
+    </p>
+  </div>
+
+  <!-- College & Class -->
+  <div class="grid grid-cols-2 gap-3">
+    <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
+      <p class="text-xs text-gray-400 uppercase font-bold tracking-wider mb-1">College</p>
+      <p class="font-bold text-gray-900 dark:text-white text-sm">SVVV Indore</p>
+      <p class="text-xs text-gray-500">Shri Vaishnav Vidyapeeth Vishwavidyalaya</p>
+    </div>
+    <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-gray-200 dark:border-gray-700">
+      <p class="text-xs text-gray-400 uppercase font-bold tracking-wider mb-1">Class</p>
+      <p class="font-bold text-gray-900 dark:text-white text-sm">CS-F</p>
+      <p class="text-xs text-gray-500">B.Tech CSE — 2023 Batch</p>
+    </div>
+  </div>
+
+  <!-- Team Members -->
+  <div>
+    <h4 class="font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+      <i class="ph-fill ph-users-three text-primary text-lg"></i> Team Members
+    </h4>
+    <div class="space-y-3">
+
+      <!-- Shreyas -->
+      <div class="p-4 rounded-2xl border border-indigo-200 dark:border-indigo-800 bg-indigo-50 dark:bg-indigo-900/20">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-primary to-secondary text-white flex items-center justify-center font-black text-lg flex-shrink-0">S</div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between flex-wrap gap-1">
+              <p class="font-bold text-gray-900 dark:text-white">Shreyas Purohit</p>
+              <span class="text-xs font-mono bg-primary/10 text-primary px-2 py-0.5 rounded-full">23100BTCSE15109</span>
+            </div>
+            <p class="text-xs font-semibold text-primary mt-0.5">Team Lead & Full-Stack Developer</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">Built the entire project from 0 to 100 — architecture, backend PHP, Gemini AI integration, all frontend UI/UX, authentication system, admin dashboard, and production deployment on InfinityFree.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sujal Patel -->
+      <div class="p-4 rounded-2xl border border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-green-500 to-emerald-600 text-white flex items-center justify-center font-black text-lg flex-shrink-0">S</div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between flex-wrap gap-1">
+              <p class="font-bold text-gray-900 dark:text-white">Sujal Patel</p>
+              <span class="text-xs font-mono bg-green-500/10 text-green-600 dark:text-green-400 px-2 py-0.5 rounded-full">23100BTCSE15136</span>
+            </div>
+            <p class="text-xs font-semibold text-green-600 dark:text-green-400 mt-0.5">QR Scanner & AI Verification Engineer</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">Built the main Aadhaar QR scanner and offline verification system, and the AI document verification pipeline including forgery detection and biometric face matching.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sujeet Rathore -->
+      <div class="p-4 rounded-2xl border border-yellow-200 dark:border-yellow-800 bg-yellow-50 dark:bg-yellow-900/20">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-yellow-500 to-orange-500 text-white flex items-center justify-center font-black text-lg flex-shrink-0">S</div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between flex-wrap gap-1">
+              <p class="font-bold text-gray-900 dark:text-white">Sujeet Rathore</p>
+              <span class="text-xs font-mono bg-yellow-500/10 text-yellow-600 dark:text-yellow-400 px-2 py-0.5 rounded-full">23100BTCSE15139</span>
+            </div>
+            <p class="text-xs font-semibold text-yellow-600 dark:text-yellow-400 mt-0.5">Database Manager</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">Designed and managed the complete MySQL database schema — users, documents, students, bus passes, verification results, audit log, and OTP tables. Handled all DB migrations and seed data.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sujal Patidar -->
+      <div class="p-4 rounded-2xl border border-pink-200 dark:border-pink-800 bg-pink-50 dark:bg-pink-900/20">
+        <div class="flex items-start gap-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-pink-500 to-secondary text-white flex items-center justify-center font-black text-lg flex-shrink-0">S</div>
+          <div class="flex-1">
+            <div class="flex items-center justify-between flex-wrap gap-1">
+              <p class="font-bold text-gray-900 dark:text-white">Sujal Patidar</p>
+              <span class="text-xs font-mono bg-pink-500/10 text-pink-600 dark:text-pink-400 px-2 py-0.5 rounded-full">23100BTCSE15138</span>
+            </div>
+            <p class="text-xs font-semibold text-pink-600 dark:text-pink-400 mt-0.5">Git & Jira Manager · Project Strategist</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400 mt-1 leading-relaxed">Maintained the Git repository and Jira project board, managed sprints and issue tracking, and contributed ideas, guidance, and feature suggestions throughout the project lifecycle.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Tech Stack -->
+  <div>
+    <h4 class="font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+      <i class="ph-fill ph-code text-primary text-lg"></i> Technologies Used
+    </h4>
+    <div class="flex flex-wrap gap-2">
+      ${['PHP 8.x', 'MySQL / MariaDB', 'Google Gemini AI', 'Tailwind CSS', 'Vanilla JavaScript', 'Apache (XAMPP)', 'Chart.js', 'QRCode.js', 'Phosphor Icons', 'Canvas Confetti', 'InfinityFree Hosting', 'QR Server API', 'UIDAI Secure QR'].map(t =>
+        `<span class="px-3 py-1.5 rounded-full text-xs font-bold bg-primary/10 text-primary dark:text-indigo-300 border border-primary/20">${t}</span>`
+      ).join('')}
+    </div>
+  </div>
+
+  <!-- Key Features -->
+  <div>
+    <h4 class="font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+      <i class="ph-fill ph-star text-primary text-lg"></i> Key Features
+    </h4>
+    <div class="grid grid-cols-2 gap-2 text-xs">
+      ${[
+        ['ph-robot','Gemini AI Analysis'],
+        ['ph-qr-code','Aadhaar QR Offline Verify'],
+        ['ph-fingerprint','Biometric Face Match'],
+        ['ph-shield-check','Forgery Detection'],
+        ['ph-database','University DB Cross-check'],
+        ['ph-certificate','Verification Certificates'],
+        ['ph-chart-polar','Admin Analytics'],
+        ['ph-list-checks','Tamper-proof Audit Trail'],
+        ['ph-envelope','OTP Email Auth'],
+        ['ph-identification-card','PAN / Domicile Verify'],
+      ].map(([icon, label]) =>
+        `<div class="flex items-center gap-1.5 p-2 rounded-lg bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-700"><i class="ph-fill ${icon} text-primary"></i><span class="text-gray-600 dark:text-gray-300">${label}</span></div>`
+      ).join('')}
+    </div>
+  </div>
+
+  <!-- Project Links -->
+  <div>
+    <h4 class="font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+      <i class="ph-fill ph-link text-primary text-lg"></i> Project Links
+    </h4>
+    <div class="space-y-2">
+      <a href="https://github.com/your-repo/docuguard" target="_blank"
+        class="flex items-center gap-3 p-3 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-primary hover:bg-primary/5 transition-all group">
+        <div class="w-8 h-8 rounded-lg bg-gray-900 dark:bg-gray-700 flex items-center justify-center flex-shrink-0">
+          <i class="ph-fill ph-github-logo text-white text-lg"></i>
+        </div>
+        <div>
+          <p class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-primary transition-colors">GitHub Repository</p>
+          <p class="text-xs text-gray-400">github.com/your-repo/docuguard</p>
+        </div>
+        <i class="ph ph-arrow-square-out text-gray-400 group-hover:text-primary ml-auto transition-colors"></i>
+      </a>
+      <a href="https://your-jira-project.atlassian.net" target="_blank"
+        class="flex items-center gap-3 p-3 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-all group">
+        <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center flex-shrink-0">
+          <i class="ph-fill ph-kanban text-white text-lg"></i>
+        </div>
+        <div>
+          <p class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-blue-600 transition-colors">Jira Project Board</p>
+          <p class="text-xs text-gray-400">your-jira-project.atlassian.net</p>
+        </div>
+        <i class="ph ph-arrow-square-out text-gray-400 group-hover:text-blue-500 ml-auto transition-colors"></i>
+      </a>
+      <a href="https://docuguard.free.nf" target="_blank"
+        class="flex items-center gap-3 p-3 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-green-400 hover:bg-green-50 dark:hover:bg-green-900/10 transition-all group">
+        <div class="w-8 h-8 rounded-lg bg-green-600 flex items-center justify-center flex-shrink-0">
+          <i class="ph-fill ph-globe text-white text-lg"></i>
+        </div>
+        <div>
+          <p class="font-bold text-gray-900 dark:text-white text-sm group-hover:text-green-600 transition-colors">Live Deployment</p>
+          <p class="text-xs text-gray-400">docuguard.free.nf</p>
+        </div>
+        <i class="ph ph-arrow-square-out text-gray-400 group-hover:text-green-500 ml-auto transition-colors"></i>
+      </a>
+    </div>
+  </div>
+
+  <!-- Academic Info -->
+  <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/40 border border-gray-200 dark:border-gray-700 text-xs text-gray-500 dark:text-gray-400 text-center">
+    <p>Submitted as part of <span class="font-bold text-gray-700 dark:text-gray-300">Software Engineering / Web Technology</span> project</p>
+    <p class="mt-1">Academic Year 2024–25 · SVVV Indore · CS-F · B.Tech CSE</p>
+  </div>
+
+</div>` },
         contact: { icon: 'ph-envelope-simple', title: 'Contact Administration', content: `<div class="space-y-4"><p class="text-gray-500 dark:text-gray-400">Need assistance? Send a secure message to the System Administrator.</p><form onsubmit="submitContactForm(event)" class="space-y-4 pt-2"><div><label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Subject</label><input type="text" name="subject" required class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 focus:ring-2 focus:ring-primary outline-none transition-all" placeholder="e.g., Account Role Request"></div><div><label class="block text-sm font-bold text-gray-700 dark:text-gray-300 mb-1">Message</label><textarea name="message" required rows="4" class="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 focus:ring-2 focus:ring-primary outline-none transition-all custom-scrollbar" placeholder="Describe your issue..."></textarea></div><button type="submit" class="w-full bg-gradient-to-r from-primary to-secondary hover:shadow-lg hover:-translate-y-0.5 text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 active:scale-95"><i class="ph-bold ph-paper-plane-tilt"></i> Dispatch Secure Message</button></form></div>` },
         support: { icon: 'ph-question', title: 'Support & Knowledge Base', content: `<div class="space-y-4"><div class="group border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden hover:border-primary transition-colors"><div class="bg-gray-50 dark:bg-gray-800/50 p-4 font-bold text-gray-900 dark:text-white flex items-center gap-2"><i class="ph-fill ph-robot text-primary"></i> How does AI verification work?</div><div class="p-4 text-sm leading-relaxed text-gray-600 dark:text-gray-400 bg-white dark:bg-darkcard border-t border-gray-100 dark:border-gray-700">Your document image is sent to Google Gemini AI, which extracts fields (name, ID, DOB), performs forgery detection, and optionally compares your face against the document photo. The extracted data is then cross-checked against the university database.</div></div><div class="group border border-gray-200 dark:border-gray-700 rounded-xl overflow-hidden hover:border-primary transition-colors"><div class="bg-gray-50 dark:bg-gray-800/50 p-4 font-bold text-gray-900 dark:text-white flex items-center gap-2"><i class="ph-fill ph-x-circle text-red-500"></i> Why was my document flagged?</div><div class="p-4 text-sm leading-relaxed text-gray-600 dark:text-gray-400 bg-white dark:bg-darkcard border-t border-gray-100 dark:border-gray-700">Common reasons: poor image quality, extracted details not matching DB records, AI detecting signs of forgery, face mismatch in biometric check, or bus pass being expired/inactive.</div></div><div class="pt-4 mt-2"><button onclick="closeInfoModal(); openInfoModal('contact')" class="w-full bg-primary/10 hover:bg-primary/20 text-primary dark:text-white font-bold py-3.5 rounded-xl transition-all flex items-center justify-center gap-2 active:scale-95 border border-primary/20"><i class="ph-fill ph-envelope-simple text-lg"></i> Open Support Ticket</button></div></div>` }
     };
